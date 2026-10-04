@@ -2,24 +2,20 @@ using System.Text.Json;
 
 namespace CashBackMerge.App;
 
-public class JsonDeserializer
+public static class JsonDeserializer
 {
-    public int MovesLimit { get; init; }
-    public IReadOnlyList<SpawnSettings> SpawnRules { get; init; } = [];
-
-    public static JsonDeserializer Deserialize(string filename)
+    public static GameConfig DeserializeFromFile(string filename)
     {
-        var path = Path.Combine(AppContext.BaseDirectory, filename);
-        if (!File.Exists(path))
-        {
-            throw new FileNotFoundException("JSON file not found");
-        }
-
-        var json = File.ReadAllText(path);
-
+        var json = ReadFile(filename);
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        return JsonSerializer.Deserialize<JsonDeserializer>(json, options) ??
+        return JsonSerializer.Deserialize<GameConfig>(json, options) ??
                throw new InvalidOperationException("Invalid JSON file");
+    }
+
+    private static string ReadFile(string filename)
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, filename);
+        return !File.Exists(path) ? throw new FileNotFoundException("JSON file not found") : File.ReadAllText(path);
     }
 }
