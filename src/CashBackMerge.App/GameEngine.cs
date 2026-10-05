@@ -20,7 +20,7 @@ public class GameEngine
         return session;
     }
 
-    private void ValidateConfig(GameConfig config)
+    public static void ValidateConfig(GameConfig config)
     {
         ArgumentNullException.ThrowIfNull(config);
 
