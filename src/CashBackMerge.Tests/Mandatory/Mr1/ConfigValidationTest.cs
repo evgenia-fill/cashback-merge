@@ -8,7 +8,7 @@ public class ConfigValidationTest
     public void ValidConfigIsAccepted()
     {
         var config = JsonDeserializer.DeserializeFromFile("test.json");
-        GameEngine.ValidateConfig(config);
+        ConfigValidation.ValidateConfig(config);
     }
 
     [Fact(DisplayName = "Сумма вероятностей spawn-правил не равна 1 — конфиг отклоняется")]
@@ -21,7 +21,7 @@ public class ConfigValidationTest
         ];
         const int validMovesLimit = 3;
         var config = CreateInvalidConfig(validMovesLimit, invalidSpawnRules);
-        Assert.Throws<InvalidOperationException>(() => GameEngine.ValidateConfig(config));
+        Assert.Throws<InvalidOperationException>(() => ConfigValidation.ValidateConfig(config));
     }
 
     [Theory(DisplayName = "movesLimit <= 0 — конфиг отклоняется")]
@@ -30,7 +30,7 @@ public class ConfigValidationTest
     public void NonPositiveMovesLimitIsRejected(int movesLimit)
     {
         var config = CreateInvalidConfig(movesLimit);
-        Assert.Throws<InvalidOperationException>(() => GameEngine.ValidateConfig(config));
+        Assert.Throws<InvalidOperationException>(() => ConfigValidation.ValidateConfig(config));
     }
 
     [Fact(DisplayName = "Пустой список spawn-правил — конфиг отклоняется")]
@@ -39,7 +39,7 @@ public class ConfigValidationTest
         IReadOnlyList<SpawnSettings> invalidSpawnRules = [];
         const int validMovesLimit = 3;
         var config = CreateInvalidConfig(validMovesLimit, invalidSpawnRules);
-        Assert.Throws<InvalidOperationException>(() => GameEngine.ValidateConfig(config));
+        Assert.Throws<InvalidOperationException>(() => ConfigValidation.ValidateConfig(config));
     }
 
     private static GameConfig CreateInvalidConfig(
