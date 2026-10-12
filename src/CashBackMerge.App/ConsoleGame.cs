@@ -1,31 +1,40 @@
+using System.Text;
+
 namespace CashBackMerge.App;
 
 public class ConsoleGame
 {
-    private GameSession Session { get; set; }
-
-    public ConsoleGame(GameSession session)
-    {
-        Session = session;
-    }
-
-    public static void PrintField(int[,] field)
+    public static void PrintField(GameSession session)
     {
         int columns;
-        var rows = columns = GameSession.FieldSize;
+        var rows = columns = session.BoardSize;
+        var border = BuildBorder(rows);
 
         for (var row = 0; row < rows; row++)
         {
-            Console.WriteLine("+---+---+---+---+");
+            Console.WriteLine(border);
 
             for (var column = 0; column < columns; column++)
             {
-                Console.Write($"| {field[row, column]} ");
+                Console.Write($"| {session.Field[row, column]} ");
             }
 
             Console.WriteLine("|");
         }
 
-        Console.WriteLine("+---+---+---+---+");
+        Console.WriteLine(border);
+    }
+
+    private static string BuildBorder(int size)
+    {
+        var border = new StringBuilder();
+        for (var i = 0; i < size; i++)
+        {
+            border.Append("+---");
+        }
+
+        border.Append("+");
+
+        return border.ToString();
     }
 }
