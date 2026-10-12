@@ -3,12 +3,13 @@ namespace CashBackMerge.App;
 public class GameSession
 {
     public int[,] Field { get; private set; }
-    public int MovesLimit { get; private set; }
+    public int MovesLimit { get; }
     public GameStatus Status { get; private set; }
+    public int UsedMoves { get; private set; } = 0;
+    public int Score { get; private set; }
+    public int BoardSize { get; }
 
-    public const int FieldSize = 4;
-
-    public GameSession(int movesLimit)
+    public GameSession(int movesLimit, int boardSize)
     {
         if (movesLimit <= 0)
         {
@@ -16,15 +17,28 @@ public class GameSession
         }
 
         MovesLimit = movesLimit;
+        BoardSize = boardSize;
         Status = GameStatus.InProgress;
-        Field = new int[FieldSize, FieldSize];
+        Field = new int[BoardSize, BoardSize];
+    }
 
-        for (var i = 0; i < FieldSize; i++)
+    internal void ApplyField(int[,] field)
+    {
+        Field = field;
+    }
+
+    internal void RegisterChangedMove()
+    {
+        UsedMoves++;
+
+        if (UsedMoves >= MovesLimit)
         {
-            for (var g = 0; g < FieldSize; g++)
-            {
-                Field[i, g] = 0;
-            }
+            Status = GameStatus.Finished;
         }
+    }
+
+    internal void AddScore(int score)
+    {
+        Score += score;
     }
 }
