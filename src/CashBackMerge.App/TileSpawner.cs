@@ -40,9 +40,9 @@ public class TileSpawner
         var field = session.Field;
         var freeCoordinates = new List<(int Row, int Column)>();
 
-        for (var i = 0; i < GameSession.FieldSize; i++)
+        for (var i = 0; i < session.BoardSize; i++)
         {
-            for (var g = 0; g < GameSession.FieldSize; g++)
+            for (var g = 0; g < session.BoardSize; g++)
             {
                 if (field[i, g] != 0)
                 {
