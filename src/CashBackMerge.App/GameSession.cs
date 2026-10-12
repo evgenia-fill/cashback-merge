@@ -11,10 +11,8 @@ public class GameSession
 
     public GameSession(int movesLimit, int boardSize)
     {
-        if (movesLimit <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(movesLimit), "MovesLimit must be greater than 0");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(movesLimit);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(boardSize);
 
         MovesLimit = movesLimit;
         BoardSize = boardSize;
