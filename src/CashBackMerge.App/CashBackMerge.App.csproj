@@ -8,9 +8,12 @@
         <RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <None Update="test.json">
+        <None Update="campaign.exemple.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="CashBackMerge.Tests"/>
     </ItemGroup>
 
 </Project>
