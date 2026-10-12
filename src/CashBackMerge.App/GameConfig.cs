@@ -1,7 +1,9 @@
 namespace CashBackMerge.App;
 
-public class GameConfig
-{
-    public int MovesLimit { get; init; }
-    public IReadOnlyList<SpawnSettings>? SpawnRules { get; init; } = [];
-}
+public record GameConfig(
+    int MovesLimit,
+    int BoardSize,
+    string MaxRewardAllowedRate,
+    string MaxRewardCashback,
+    IReadOnlyList<SpawnSettings>? SpawnRules,
+    IReadOnlyList<RewardSettings>? RewardTable);
