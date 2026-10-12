@@ -7,7 +7,7 @@ public class ConfigValidationTest
     [Fact(DisplayName = "Валидный конфиг принимается")]
     public void ValidConfigIsAccepted()
     {
-        var config = JsonDeserializer.DeserializeFromFile("test.json");
+        var config = JsonDeserializer.DeserializeFromFile("campaign.exemple.json");
         ConfigValidation.ValidateConfig(config);
     }
 
@@ -16,11 +16,10 @@ public class ConfigValidationTest
     {
         IReadOnlyList<SpawnSettings> invalidSpawnRules =
         [
-            new SpawnSettings { Cashback = "1", Probability = "0.67" },
-            new SpawnSettings { Cashback = "2", Probability = "0.67" }
+            new SpawnSettings("1", "0.67"),
+            new SpawnSettings("2", "0.67")
         ];
-        const int validMovesLimit = 3;
-        var config = CreateInvalidConfig(validMovesLimit, invalidSpawnRules);
+        var config = CreateValidConfig() with { SpawnRules = invalidSpawnRules };
         Assert.Throws<InvalidOperationException>(() => ConfigValidation.ValidateConfig(config));
     }
 
@@ -29,7 +28,7 @@ public class ConfigValidationTest
     [InlineData(0)]
     public void NonPositiveMovesLimitIsRejected(int movesLimit)
     {
-        var config = CreateInvalidConfig(movesLimit);
+        var config = CreateValidConfig() with { MovesLimit = movesLimit };
         Assert.Throws<InvalidOperationException>(() => ConfigValidation.ValidateConfig(config));
     }
 
@@ -37,12 +36,27 @@ public class ConfigValidationTest
     public void EmptySpawnRulesAreRejected()
     {
         IReadOnlyList<SpawnSettings> invalidSpawnRules = [];
-        const int validMovesLimit = 3;
-        var config = CreateInvalidConfig(validMovesLimit, invalidSpawnRules);
+        var config = CreateValidConfig() with { SpawnRules = invalidSpawnRules };
         Assert.Throws<InvalidOperationException>(() => ConfigValidation.ValidateConfig(config));
     }
 
-    private static GameConfig CreateInvalidConfig(
-        int movesLimit = 0, IReadOnlyList<SpawnSettings>? spawnRules = null) =>
-        new() { MovesLimit = movesLimit, SpawnRules = spawnRules };
+    private static GameConfig CreateValidConfig() =>
+        new(
+            MovesLimit: 3,
+            BoardSize: 4,
+            MaxRewardAllowedRate: "0.20",
+            MaxRewardCashback: "32",
+            SpawnRules:
+            [
+                new SpawnSettings("1", "0.85"),
+                new SpawnSettings("2", "0.15")
+            ],
+            RewardTable:
+            [
+                new RewardSettings("2", "0"),
+                new RewardSettings("4", "50"),
+                new RewardSettings("8", "150"),
+                new RewardSettings("16", "500"),
+                new RewardSettings("32", "2000")
+            ]);
 }

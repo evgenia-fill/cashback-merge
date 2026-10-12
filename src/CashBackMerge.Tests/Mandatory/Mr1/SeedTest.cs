@@ -8,11 +8,10 @@ public class SeedTest
     public void SameConfigAndSeedProduceSameInitialBoard()
     {
         const int seed = 67;
-        var config = JsonDeserializer.DeserializeFromFile("test.json");
-        var engine = new GameEngine();
-        var firstResult = engine.Start(config, seed);
-        var secondResult = engine.Start(config, seed);
-        Assert.Equal(firstResult.Field.Cast<int>(), secondResult.Field.Cast<int>());
+        var config = JsonDeserializer.DeserializeFromFile("campaign.exemple.json");
+        var firstResult = new GameEngine(config, seed);
+        var secondResult = new GameEngine(config, seed);
+        Assert.Equal(firstResult.Session.Field.Cast<int>(), secondResult.Session.Field.Cast<int>());
     }
 
     [Fact(DisplayName = "Одинаковый конфиг, seed и стратегия дают одинаковый отчёт симуляции",
