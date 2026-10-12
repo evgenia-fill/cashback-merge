@@ -1,7 +1,3 @@
 namespace CashBackMerge.App;
 
-public class SpawnSettings
-{
-    public string Cashback { get; set; } = "";
-    public string Probability { get; set; } = "";
-}
+public record SpawnSettings(string Cashback, string Probability);
