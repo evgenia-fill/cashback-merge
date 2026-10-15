@@ -2,25 +2,18 @@ using System.Globalization;
 
 namespace CashBackMerge.App;
 
-public static class ConfigValidation
+public static class SpawnRulesValidator
 {
-    public static void ValidateConfig(GameConfig config)
+    public static void Validate(IReadOnlyList<SpawnSettings>? spawnRules)
     {
-        ArgumentNullException.ThrowIfNull(config);
-
-        if (config.MovesLimit <= 0)
-        {
-            throw new InvalidOperationException("Moves limit must be greater than zero");
-        }
-
-        if (config.SpawnRules is null || config.SpawnRules.Count == 0)
+        if (spawnRules is null || spawnRules.Count == 0)
         {
             throw new InvalidOperationException("Spawn rules cannot be empty");
         }
 
         var overallProbability = 0m;
 
-        foreach (var spawnRule in config.SpawnRules)
+        foreach (var spawnRule in spawnRules)
         {
             if (!decimal.TryParse(spawnRule.Probability, CultureInfo.InvariantCulture, out var probability))
             {
