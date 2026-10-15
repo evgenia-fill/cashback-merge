@@ -6,7 +6,8 @@ public class MoveEngineTest
 {
     private const int Seed = 67;
     private static readonly GameConfig Config = JsonDeserializer.DeserializeFromFile("campaign.exemple.json");
-    private readonly GameEngine _engine = new(Config, Seed);
+    private static readonly TileSpawner TileSpawner = new TileSpawner(Seed);
+    private readonly GameEngine _engine = new(Config, TileSpawner);
     private const MoveDirection Direction = MoveDirection.Left;
 
     [Fact(DisplayName = "Невалидный ход не меняет поле, не тратит ход и не создаёт плитку")]
@@ -14,7 +15,7 @@ public class MoveEngineTest
     {
         var session = _engine.Session;
         var moveResult = _engine.ApplyMove(Direction);
-        
+
         Assert.Fail("Тест не реализован");
     }
 

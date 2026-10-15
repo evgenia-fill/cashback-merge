@@ -9,8 +9,10 @@ public class SeedTest
     {
         const int seed = 67;
         var config = JsonDeserializer.DeserializeFromFile("campaign.exemple.json");
-        var firstResult = new GameEngine(config, seed);
-        var secondResult = new GameEngine(config, seed);
+        var firstTileSpawner = new TileSpawner(seed);
+        var secondTileSpawner = new TileSpawner(seed);
+        var firstResult = new GameEngine(config, firstTileSpawner);
+        var secondResult = new GameEngine(config, secondTileSpawner);
         Assert.Equal(firstResult.Session.Field.Cast<int>(), secondResult.Session.Field.Cast<int>());
     }
 

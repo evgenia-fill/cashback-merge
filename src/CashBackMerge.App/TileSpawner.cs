@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace CashBackMerge.App;
 
-public class TileSpawner
+public class TileSpawner : ITileSpawner
 {
     private readonly Random _random;
 

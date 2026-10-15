@@ -4,15 +4,15 @@ public class GameEngine
 {
     private const int InitialTilesCount = 2;
     private readonly GameConfig _config;
-    private readonly TileSpawner _tileSpawner;
+    private readonly ITileSpawner _tileSpawner;
     public GameSession Session { get; }
 
-    public GameEngine(GameConfig config, int seed)
+    public GameEngine(GameConfig config, ITileSpawner tileSpawner)
     {
         _config = config;
         ConfigValidation.ValidateConfig(_config);
 
-        _tileSpawner = new TileSpawner(seed);
+        _tileSpawner = tileSpawner;
         Session = new GameSession(_config.MovesLimit, _config.BoardSize);
 
         for (var i = 0; i < InitialTilesCount; i++)
