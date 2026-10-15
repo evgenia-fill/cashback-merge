@@ -15,7 +15,7 @@ public class TileSpawner : ITileSpawner
     {
         var value = ChooseTileValue(spawnRules);
         var position = ChooseTilePosition(session);
-        session.Field[position.Row, position.Column] = value;
+        session.Board[position.Row, position.Column] = value;
     }
 
     private int ChooseTileValue(IReadOnlyList<SpawnSettings> spawnRules)
@@ -37,14 +37,14 @@ public class TileSpawner : ITileSpawner
 
     private (int Row, int Column) ChooseTilePosition(GameSession session)
     {
-        var field = session.Field;
+        var Board = session.Board;
         var freeCoordinates = new List<(int Row, int Column)>();
 
         for (var i = 0; i < session.BoardSize; i++)
         {
             for (var g = 0; g < session.BoardSize; g++)
             {
-                if (field[i, g] != 0)
+                if (Board[i, g] != 0)
                 {
                     continue;
                 }

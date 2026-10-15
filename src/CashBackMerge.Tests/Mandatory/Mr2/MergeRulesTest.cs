@@ -36,33 +36,33 @@ public class MergeRulesTest
 
             if (direction is MoveDirection.Left or MoveDirection.Right)
             {
-                session.Field[0, 0] = 1;
-                session.Field[0, 1] = 1;
+                session.Board[0, 0] = 1;
+                session.Board[0, 1] = 1;
             }
             else
             {
-                session.Field[0, 0] = 1;
-                session.Field[1, 0] = 1;
+                session.Board[0, 0] = 1;
+                session.Board[1, 0] = 1;
             }
 
-            var newField = GameEngine.MoveInDirection(session, direction);
+            var newBoard = BoardMover.MoveInDirection(session, direction);
 
             switch (direction)
             {
                 case MoveDirection.Left:
-                    Assert.Equal(2, newField.Field[0, 0]);
+                    Assert.Equal(2, newBoard.Board[0, 0]);
                     break;
 
                 case MoveDirection.Right:
-                    Assert.Equal(2, newField.Field[0, BoardSize - 1]);
+                    Assert.Equal(2, newBoard.Board[0, BoardSize - 1]);
                     break;
 
                 case MoveDirection.Up:
-                    Assert.Equal(2, newField.Field[0, 0]);
+                    Assert.Equal(2, newBoard.Board[0, 0]);
                     break;
 
                 case MoveDirection.Down:
-                    Assert.Equal(2, newField.Field[BoardSize - 1, 0]);
+                    Assert.Equal(2, newBoard.Board[BoardSize - 1, 0]);
                     break;
             }
         }
@@ -77,16 +77,16 @@ public class MergeRulesTest
 
         for (var i = 0; i < BoardSize; i++)
         {
-            session.Field[0, i] = arrayBefore[i];
+            session.Board[0, i] = arrayBefore[i];
         }
 
-        var newField = GameEngine.MoveInDirection(session, Direction);
+        var newBoard = BoardMover.MoveInDirection(session, Direction);
 
         var resultArray = new int[BoardSize];
 
         for (var i = 0; i < BoardSize; i++)
         {
-            resultArray[i] = newField.Field[0, i];
+            resultArray[i] = newBoard.Board[0, i];
         }
 
         Assert.Equal(arrayExpected, resultArray);

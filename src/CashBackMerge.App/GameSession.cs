@@ -2,7 +2,7 @@ namespace CashBackMerge.App;
 
 public class GameSession
 {
-    public int[,] Field { get; private set; }
+    public int[,] Board { get; private set; }
     public int MovesLimit { get; }
     public GameStatus Status { get; private set; }
     public int UsedMoves { get; private set; } = 0;
@@ -17,12 +17,12 @@ public class GameSession
         MovesLimit = movesLimit;
         BoardSize = boardSize;
         Status = GameStatus.InProgress;
-        Field = new int[BoardSize, BoardSize];
+        Board = new int[BoardSize, BoardSize];
     }
 
-    internal void ApplyField(int[,] field)
+    internal void ApplyBoard(int[,] Board)
     {
-        Field = field;
+        Board = Board;
     }
 
     internal void RegisterChangedMove()

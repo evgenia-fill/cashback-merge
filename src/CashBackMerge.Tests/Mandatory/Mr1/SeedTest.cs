@@ -13,7 +13,7 @@ public class SeedTest
         var secondTileSpawner = new TileSpawner(seed);
         var firstResult = new GameEngine(config, firstTileSpawner);
         var secondResult = new GameEngine(config, secondTileSpawner);
-        Assert.Equal(firstResult.Session.Field.Cast<int>(), secondResult.Session.Field.Cast<int>());
+        Assert.Equal(firstResult.Session.Board.Cast<int>(), secondResult.Session.Board.Cast<int>());
     }
 
     [Fact(DisplayName = "Одинаковый конфиг, seed и стратегия дают одинаковый отчёт симуляции",

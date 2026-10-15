@@ -4,7 +4,7 @@ namespace CashBackMerge.App;
 
 public class ConsoleGame
 {
-    public static void PrintField(GameSession session)
+    public static void PrintBoard(GameSession session)
     {
         int columns;
         var rows = columns = session.BoardSize;
@@ -16,7 +16,7 @@ public class ConsoleGame
 
             for (var column = 0; column < columns; column++)
             {
-                Console.Write($"| {session.Field[row, column]} ");
+                Console.Write($"| {session.Board[row, column]} ");
             }
 
             Console.WriteLine("|");
