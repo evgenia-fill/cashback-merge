@@ -20,9 +20,14 @@ public class GameSession
         Board = new int[BoardSize, BoardSize];
     }
 
-    internal void ApplyBoard(int[,] Board)
+    internal void SetTile(int row, int column, int value)
     {
-        Board = Board;
+        Board[row, column] = value;
+    }
+
+    internal void ApplyBoard(int[,] board)
+    {
+        Board = board;
     }
 
     internal void RegisterChangedMove()

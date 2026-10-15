@@ -11,11 +11,12 @@ public class TileSpawner : ITileSpawner
         _random = new Random(seed);
     }
 
-    public void SpawnTile(GameSession session, IReadOnlyList<SpawnSettings> spawnRules)
+    public TileSpawnResult CreateSpawn(GameSession session, IReadOnlyList<SpawnSettings> spawnRules)
     {
         var value = ChooseTileValue(spawnRules);
         var position = ChooseTilePosition(session);
-        session.Board[position.Row, position.Column] = value;
+
+        return new TileSpawnResult(position.Row, position.Column, value);
     }
 
     private int ChooseTileValue(IReadOnlyList<SpawnSettings> spawnRules)
@@ -37,14 +38,14 @@ public class TileSpawner : ITileSpawner
 
     private (int Row, int Column) ChooseTilePosition(GameSession session)
     {
-        var Board = session.Board;
+        var board = session.Board;
         var freeCoordinates = new List<(int Row, int Column)>();
 
         for (var i = 0; i < session.BoardSize; i++)
         {
             for (var g = 0; g < session.BoardSize; g++)
             {
-                if (Board[i, g] != 0)
+                if (board[i, g] != 0)
                 {
                     continue;
                 }

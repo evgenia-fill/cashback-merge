@@ -17,7 +17,8 @@ public class GameEngine
 
         for (var i = 0; i < InitialTilesCount; i++)
         {
-            _tileSpawner.SpawnTile(Session, _config.SpawnRules);
+            var tileSpawnResult = _tileSpawner.CreateSpawn(Session, _config.SpawnRules);
+            Session.SetTile(tileSpawnResult.Row, tileSpawnResult.Column, tileSpawnResult.Value);
         }
     }
 
@@ -38,7 +39,8 @@ public class GameEngine
 
         Session.AddScore(moveResult.Score);
         Session.ApplyBoard(moveResult.Board);
-        _tileSpawner.SpawnTile(Session, _config.SpawnRules);
+        var tileSpawnResult = _tileSpawner.CreateSpawn(Session, _config.SpawnRules);
+        Session.SetTile(tileSpawnResult.Row, tileSpawnResult.Column, tileSpawnResult.Value);
         Session.RegisterChangedMove();
 
         return new MoveResult(isBoardChanged);
