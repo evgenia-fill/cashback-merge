@@ -36,33 +36,34 @@ public class MergeRulesTest
 
             if (direction is MoveDirection.Left or MoveDirection.Right)
             {
-                session.Board[0, 0] = 1;
-                session.Board[0, 1] = 1;
+                session.SetTile(0, 0, 1);
+                session.SetTile(0, 1, 1);
             }
             else
             {
-                session.Board[0, 0] = 1;
-                session.Board[1, 0] = 1;
+                session.SetTile(0, 0, 1);
+                session.SetTile(1, 0, 1);
             }
 
             var newBoard = BoardMover.MoveInDirection(session, direction);
+            var board = newBoard.Board;
 
             switch (direction)
             {
                 case MoveDirection.Left:
-                    Assert.Equal(2, newBoard.Board[0, 0]);
+                    Assert.Equal(2, board[0, 0]);
                     break;
 
                 case MoveDirection.Right:
-                    Assert.Equal(2, newBoard.Board[0, BoardSize - 1]);
+                    Assert.Equal(2, board[0, BoardSize - 1]);
                     break;
 
                 case MoveDirection.Up:
-                    Assert.Equal(2, newBoard.Board[0, 0]);
+                    Assert.Equal(2, board[0, 0]);
                     break;
 
                 case MoveDirection.Down:
-                    Assert.Equal(2, newBoard.Board[BoardSize - 1, 0]);
+                    Assert.Equal(2, board[BoardSize - 1, 0]);
                     break;
             }
         }
@@ -77,7 +78,7 @@ public class MergeRulesTest
 
         for (var i = 0; i < BoardSize; i++)
         {
-            session.Board[0, i] = arrayBefore[i];
+            session.SetTile(0, i, arrayBefore[i]);
         }
 
         var newBoard = BoardMover.MoveInDirection(session, Direction);
