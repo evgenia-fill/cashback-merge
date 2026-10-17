@@ -18,55 +18,36 @@ public class MergeRulesTest
         AssertLeftMove(before, expected);
     }
 
-    [Theory(DisplayName = "Одна плитка не сливается дважды за ход: [1,1,2,.] -> [2,2,.,.]")]
-    [InlineData("1,1,2,.", "2,2,.,.")]
-    public void TileDoesNotMergeTwiceInOneMove(string before, string expected)
+    [Fact(DisplayName = "Одна плитка не сливается дважды за ход: [1,1,2,.] -> [2,2,.,.]")]
+    public void TileDoesNotMergeTwiceInOneMove()
     {
-        AssertLeftMove(before, expected);
+        AssertLeftMove("1,1,2,.", "2,2,.,.");
     }
 
-    [Fact(DisplayName = "Слияние работает во всех четырёх направлениях")]
-    public void MergeWorksInAllDirections()
+    [Theory(DisplayName = "Слияние работает во всех четырёх направлениях")]
+    [InlineData(MoveDirection.Left, 0, 0)]
+    [InlineData(MoveDirection.Right, 0, BoardSize - 1)]
+    [InlineData(MoveDirection.Up, 0, 0)]
+    [InlineData(MoveDirection.Down, BoardSize - 1, 0)]
+    public void MergeWorksInAllDirections(MoveDirection direction, int expectedRow, int expectedColumn)
     {
-        var directions = new[] { MoveDirection.Left, MoveDirection.Right, MoveDirection.Up, MoveDirection.Down, };
+        var session = new GameSession(MovesLimit, BoardSize);
 
-        foreach (var direction in directions)
+        session.SetTile(0, 0, 1);
+
+        if (direction is MoveDirection.Left or MoveDirection.Right)
         {
-            var session = new GameSession(MovesLimit, BoardSize);
-
-            if (direction is MoveDirection.Left or MoveDirection.Right)
-            {
-                session.SetTile(0, 0, 1);
-                session.SetTile(0, 1, 1);
-            }
-            else
-            {
-                session.SetTile(0, 0, 1);
-                session.SetTile(1, 0, 1);
-            }
-
-            var newBoard = BoardMover.MoveInDirection(session, direction);
-            var board = newBoard.Board;
-
-            switch (direction)
-            {
-                case MoveDirection.Left:
-                    Assert.Equal(2, board[0, 0]);
-                    break;
-
-                case MoveDirection.Right:
-                    Assert.Equal(2, board[0, BoardSize - 1]);
-                    break;
-
-                case MoveDirection.Up:
-                    Assert.Equal(2, board[0, 0]);
-                    break;
-
-                case MoveDirection.Down:
-                    Assert.Equal(2, board[BoardSize - 1, 0]);
-                    break;
-            }
+            session.SetTile(0, 1, 1);
         }
+        else
+        {
+            session.SetTile(1, 0, 1);
+        }
+
+        var moveResult = BoardMover.MoveInDirection(session, direction);
+        var board = moveResult.Board;
+
+        Assert.Equal(2, board[expectedRow, expectedColumn]);
     }
 
     private static void AssertLeftMove(string before, string expected)
@@ -81,13 +62,14 @@ public class MergeRulesTest
             session.SetTile(0, i, arrayBefore[i]);
         }
 
-        var newBoard = BoardMover.MoveInDirection(session, Direction);
+        var moveResult = BoardMover.MoveInDirection(session, Direction);
+        var board = moveResult.Board;
 
         var resultArray = new int[BoardSize];
 
         for (var i = 0; i < BoardSize; i++)
         {
-            resultArray[i] = newBoard.Board[0, i];
+            resultArray[i] = board[0, i];
         }
 
         Assert.Equal(arrayExpected, resultArray);
