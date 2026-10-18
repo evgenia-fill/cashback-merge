@@ -35,14 +35,13 @@ public class MergeRulesTest
 
         session.SetTile(0, 0, 1);
 
-        if (direction is MoveDirection.Left or MoveDirection.Right)
+        var secondTilePosition = direction switch
         {
-            session.SetTile(0, 1, 1);
-        }
-        else
-        {
-            session.SetTile(1, 0, 1);
-        }
+            MoveDirection.Left or MoveDirection.Right => (Row: 0, Column: 1),
+            MoveDirection.Up or MoveDirection.Down => (Row: 1, Column: 0),
+            _ => throw new InvalidOperationException(nameof(direction))
+        };
+        session.SetTile(secondTilePosition.Row, secondTilePosition.Column, 1);
 
         var moveResult = BoardMover.MoveInDirection(session, direction);
         var board = moveResult.Board;
