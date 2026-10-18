@@ -11,10 +11,10 @@ public class TileSpawner : ITileSpawner
         _random = new Random(seed);
     }
 
-    public TileSpawnResult CreateSpawn(GameSession session, IReadOnlyList<SpawnSettings> spawnRules)
+    public TileSpawnResult CreateSpawn(int[,] board, IReadOnlyList<SpawnSettings> spawnRules)
     {
         var value = ChooseTileValue(spawnRules);
-        var position = ChooseTilePosition(session);
+        var position = ChooseTilePosition(board);
 
         return new TileSpawnResult(position.Row, position.Column, value);
     }
@@ -36,14 +36,13 @@ public class TileSpawner : ITileSpawner
         return int.Parse(spawnRules[^1].Cashback);
     }
 
-    private (int Row, int Column) ChooseTilePosition(GameSession session)
+    private (int Row, int Column) ChooseTilePosition(int[,] board)
     {
-        var board = session.Board;
         var freeCoordinates = new List<(int Row, int Column)>();
 
-        for (var i = 0; i < session.BoardSize; i++)
+        for (var i = 0; i < board.GetLength(0); i++)
         {
-            for (var g = 0; g < session.BoardSize; g++)
+            for (var g = 0; g < board.GetLength(1); g++)
             {
                 if (board[i, g] != 0)
                 {
