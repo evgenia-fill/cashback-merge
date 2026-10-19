@@ -2,20 +2,21 @@ namespace CashBackMerge.App;
 
 public static class ConfigValidator
 {
-    public static void Validate(GameConfig config)
+    public static void Validate(GameConfigDto configDto)
     {
-        ArgumentNullException.ThrowIfNull(config);
+        ArgumentNullException.ThrowIfNull(configDto);
 
-        if (config.MovesLimit <= 0)
+        if (configDto.MovesLimit <= 0)
         {
             throw new InvalidOperationException("Moves limit must be greater than zero");
         }
 
-        if (config.BoardSize <= 0)
+        if (configDto.BoardSize <= 0)
         {
             throw new InvalidOperationException("Board size must be greater than zero");
         }
 
-        SpawnRulesValidator.Validate(config.SpawnRules);
+        SpawnRulesValidator.Validate(configDto.SpawnRules);
+        RewardValidator.Validate(configDto);
     }
 }

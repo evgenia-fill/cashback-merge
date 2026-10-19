@@ -4,7 +4,7 @@ namespace CashBackMerge.App;
 
 public static class SpawnRulesValidator
 {
-    public static void Validate(IReadOnlyList<SpawnSettings>? spawnRules)
+    public static void Validate(IReadOnlyList<SpawnSettingsDto>? spawnRules)
     {
         if (spawnRules is null || spawnRules.Count == 0)
         {
