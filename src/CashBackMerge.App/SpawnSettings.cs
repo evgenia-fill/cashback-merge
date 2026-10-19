@@ -1,3 +1,3 @@
 namespace CashBackMerge.App;
 
-public record SpawnSettings(string Cashback, string Probability);
+public record SpawnSettings(int Cashback, decimal Probability);
