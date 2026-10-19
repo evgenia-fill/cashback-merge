@@ -4,12 +4,12 @@ namespace CashBackMerge.App;
 
 public static class JsonDeserializer
 {
-    public static GameConfig DeserializeFromFile(string filename)
+    public static GameConfigDto DeserializeFromFile(string filename)
     {
         var json = ReadFile(filename);
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        return JsonSerializer.Deserialize<GameConfig>(json, options) ??
+        return JsonSerializer.Deserialize<GameConfigDto>(json, options) ??
                throw new InvalidOperationException("Invalid JSON file");
     }
 
