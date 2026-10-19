@@ -10,7 +10,6 @@ public class GameEngine
     public GameEngine(GameConfig config, ITileSpawner tileSpawner)
     {
         _config = config;
-        ConfigValidator.Validate(_config);
 
         _tileSpawner = tileSpawner;
         Session = new GameSession(_config.MovesLimit, _config.BoardSize);
