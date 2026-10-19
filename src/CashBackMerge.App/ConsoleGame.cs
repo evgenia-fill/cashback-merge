@@ -4,19 +4,17 @@ namespace CashBackMerge.App;
 
 public class ConsoleGame
 {
-    public static void PrintBoard(GameSession session)
+    public static void PrintBoard(int[,] board)
     {
-        int columns;
-        var rows = columns = session.BoardSize;
-        var border = BuildBorder(rows);
+        var border = BuildBorder(board.GetLength(0));
 
-        for (var row = 0; row < rows; row++)
+        for (var row = 0; row < board.GetLength(0); row++)
         {
             Console.WriteLine(border);
 
-            for (var column = 0; column < columns; column++)
+            for (var column = 0; column < board.GetLength(1); column++)
             {
-                Console.Write($"| {session.Board[row, column]} ");
+                Console.Write($"| {board[row, column]} ");
             }
 
             Console.WriteLine("|");
