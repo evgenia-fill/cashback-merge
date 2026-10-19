@@ -14,10 +14,10 @@ public class ConfigValidationTest
     [Fact(DisplayName = "Сумма вероятностей spawn-правил не равна 1 — конфиг отклоняется")]
     public void ProbabilitiesNotSummingToOneAreRejected()
     {
-        IReadOnlyList<SpawnSettings> invalidSpawnRules =
+        IReadOnlyList<SpawnSettingsDto> invalidSpawnRules =
         [
-            new SpawnSettings("1", "0.67"),
-            new SpawnSettings("2", "0.67")
+            new SpawnSettingsDto("1", "0.67"),
+            new SpawnSettingsDto("2", "0.67")
         ];
         var config = CreateValidConfig() with { SpawnRules = invalidSpawnRules };
         Assert.Throws<InvalidOperationException>(() => ConfigValidator.Validate(config));
@@ -35,12 +35,12 @@ public class ConfigValidationTest
     [Fact(DisplayName = "Пустой список spawn-правил — конфиг отклоняется")]
     public void EmptySpawnRulesAreRejected()
     {
-        IReadOnlyList<SpawnSettings> invalidSpawnRules = [];
+        IReadOnlyList<SpawnSettingsDto> invalidSpawnRules = [];
         var config = CreateValidConfig() with { SpawnRules = invalidSpawnRules };
         Assert.Throws<InvalidOperationException>(() => ConfigValidator.Validate(config));
     }
 
-    private static GameConfig CreateValidConfig() =>
+    private static GameConfigDto CreateValidConfig() =>
         new(
             MovesLimit: 3,
             BoardSize: 4,
@@ -48,15 +48,15 @@ public class ConfigValidationTest
             MaxRewardCashback: "32",
             SpawnRules:
             [
-                new SpawnSettings("1", "0.85"),
-                new SpawnSettings("2", "0.15")
+                new SpawnSettingsDto("1", "0.85"),
+                new SpawnSettingsDto("2", "0.15")
             ],
             RewardTable:
             [
-                new RewardSettings("2", "0"),
-                new RewardSettings("4", "50"),
-                new RewardSettings("8", "150"),
-                new RewardSettings("16", "500"),
-                new RewardSettings("32", "2000")
+                new RewardSettingsDto("2", "0"),
+                new RewardSettingsDto("4", "50"),
+                new RewardSettingsDto("8", "150"),
+                new RewardSettingsDto("16", "500"),
+                new RewardSettingsDto("32", "2000")
             ]);
 }

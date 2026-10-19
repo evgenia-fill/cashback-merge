@@ -5,7 +5,8 @@ namespace CashBackMerge.Tests.Mandatory.Mr2;
 public class MoveEngineTest
 {
     private const int Seed = 67;
-    private static readonly GameConfig Config = JsonDeserializer.DeserializeFromFile("campaign.exemple.json");
+
+    private static readonly GameConfig Config = CreateConfig();
 
     [Fact(DisplayName = "Невалидный ход не меняет поле, не тратит ход и не создаёт плитку")]
     public void InvalidMoveChangesNothing()
@@ -44,6 +45,7 @@ public class MoveEngineTest
         var moveResult = engine.ApplyMove(MoveDirection.Left);
 
         var countTilesAfter = session.Board.Cast<int>().Count(x => x != 0);
+
         var difference = countTilesAfter - countTilesBefore;
 
         Assert.True(moveResult.IsChanged);
@@ -99,7 +101,8 @@ public class MoveEngineTest
         var engine = new GameEngine(Config, tileSpawner);
         var session = engine.Session;
 
-        var boardWithoutMerge = new int[session.BoardSize, session.BoardSize];
+        var boardWithoutMerge =
+            new int[session.BoardSize, session.BoardSize];
 
         boardWithoutMerge[0, 1] = 1;
         session.ApplyBoard(boardWithoutMerge);
@@ -129,5 +132,12 @@ public class MoveEngineTest
         engine.ApplyMove(MoveDirection.Left);
 
         Assert.Equal(14, session.Score);
+    }
+
+    private static GameConfig CreateConfig()
+    {
+        var dto = JsonDeserializer.DeserializeFromFile("campaign.exemple.json");
+        ConfigValidator.Validate(dto);
+        return ConfigParser.Parse(dto);
     }
 }
