@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace CashBackMerge.App;
 
 public class TileSpawner : ITileSpawner
@@ -26,14 +24,15 @@ public class TileSpawner : ITileSpawner
 
         foreach (var spawnRule in spawnRules)
         {
-            overallProbability += decimal.Parse(spawnRule.Probability, CultureInfo.InvariantCulture);
+            overallProbability += spawnRule.Probability;
+
             if ((decimal)randomValue < overallProbability)
             {
-                return int.Parse(spawnRule.Cashback);
+                return spawnRule.Cashback;
             }
         }
 
-        return int.Parse(spawnRules[^1].Cashback);
+        return spawnRules[^1].Cashback;
     }
 
     private (int Row, int Column) ChooseTilePosition(int[,] board)
