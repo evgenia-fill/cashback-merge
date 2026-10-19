@@ -43,7 +43,7 @@ public class MergeRulesTest
         };
         session.SetTile(secondTilePosition.Row, secondTilePosition.Column, 1);
 
-        var moveResult = BoardMover.MoveInDirection(session, direction);
+        var moveResult = BoardMover.MoveInDirection(session.Board, direction);
         var board = moveResult.Board;
 
         Assert.Equal(2, board[expectedRow, expectedColumn]);
@@ -61,7 +61,7 @@ public class MergeRulesTest
             session.SetTile(0, i, arrayBefore[i]);
         }
 
-        var moveResult = BoardMover.MoveInDirection(session, Direction);
+        var moveResult = BoardMover.MoveInDirection(session.Board, Direction);
         var board = moveResult.Board;
 
         var resultArray = new int[BoardSize];

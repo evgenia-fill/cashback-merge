@@ -2,17 +2,16 @@ namespace CashBackMerge.App;
 
 public static class BoardMover
 {
-    public static BoardMoveResult MoveInDirection(GameSession session, MoveDirection direction)
+    public static BoardMoveResult MoveInDirection(int[,] board, MoveDirection direction)
     {
-        var boardSize = session.BoardSize;
-        var newBoard = new int[boardSize, boardSize];
+        var newBoard = new int[board.GetLength(0), board.GetLength(1)];
         var score = 0;
 
         var shouldReverse = direction is MoveDirection.Right or MoveDirection.Down;
 
-        for (var i = 0; i < boardSize; i++)
+        for (var i = 0; i < board.GetLength(0); i++)
         {
-            var line = GetLine(session.Board, i, direction);
+            var line = GetLine(board, i, direction);
 
             var lineResult = MoveLineIfReversed(line, shouldReverse);
 

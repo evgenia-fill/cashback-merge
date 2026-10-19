@@ -28,7 +28,7 @@ public class GameEngine
             throw new InvalidOperationException("Game is already finished");
         }
 
-        var moveResult = BoardMover.MoveInDirection(Session, direction);
+        var moveResult = BoardMover.MoveInDirection(Session.Board, direction);
 
         var isBoardChanged = !Session.Board.Cast<int>().SequenceEqual(moveResult.Board.Cast<int>());
         if (!isBoardChanged)
