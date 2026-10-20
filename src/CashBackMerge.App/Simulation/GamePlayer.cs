@@ -1,4 +1,6 @@
-namespace CashBackMerge.App;
+using CashBackMerge.App.Strategies;
+
+namespace CashBackMerge.App.Simulation;
 
 public class GamePlayer
 {
@@ -22,7 +24,7 @@ public class GamePlayer
                 break;
             }
 
-            engine.ApplyMove(strategy.GetNextMove(availableMoves));
+            engine.ApplyMove(strategy.GetNextMove(availableMoves, session.Board));
         }
 
         var maxTile = session.Board.Cast<int>().Max();

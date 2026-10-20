@@ -1,4 +1,4 @@
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Strategies;
 
 public class RandomMoveStrategy : IMoveStrategy
 {
@@ -9,7 +9,7 @@ public class RandomMoveStrategy : IMoveStrategy
         _random = new Random(seed);
     }
 
-    public MoveDirection GetNextMove(IReadOnlyList<MoveDirection> availableMoves)
+    public MoveDirection GetNextMove(IReadOnlyList<MoveDirection> availableMoves, int[,] board)
     {
         return availableMoves[_random.Next(availableMoves.Count)];
     }

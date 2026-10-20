@@ -1,5 +1,8 @@
 using CashBackMerge.App;
+using CashBackMerge.App.Configuration;
+using CashBackMerge.App.Enums;
 using CashBackMerge.App.Parsing;
+using CashBackMerge.App.Strategies;
 
 try
 {
@@ -9,7 +12,18 @@ try
     ConfigValidator.Validate(dto);
     var config = ConfigParser.Parse(dto);
 
-    var simulator = new GameSimulator(config, options.Seed, options.Strategy);
+    Func<int, IMoveStrategy> strategyFactory = options.Strategy switch
+    {
+        StrategyType.Random =>
+            seed => new RandomMoveStrategy(seed),
+
+        StrategyType.Greedy =>
+            _ => new GreedyScoreStrategy(),
+
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
+    var simulator = new GameSimulator(config, options.Seed, options.Strategy, strategyFactory);
     var simulationResult = simulator.Simulate(options.Players);
 
     var statistics = StatisticsCreator.CreateStatistics(simulationResult);

@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Configuration;
 
 public static class ConfigParser
 {

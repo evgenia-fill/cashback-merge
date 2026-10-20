@@ -400,7 +400,7 @@ dotnet run --project ./src/CashBackMerge.App/CashBackMerge.App.csproj -- simulat
   --config campaign.exemple.json \
   --players 10000 \
   --strategy random \
-  --seed 42 \
+  --seed 67 \
   --output report.json
 ```
 
@@ -431,3 +431,87 @@ dotnet run --project ./src/CashBackMerge.App/CashBackMerge.App.csproj -- simulat
 - `actualMaxRewardRate`;
 - статус `OK` / `FAILED`;
 - одинаковый отчёт при одинаковых входных параметрах.
+
+
+## Бонус: Greedy-стратегия
+
+Помимо случайной стратегии `random`, реализована стратегия `greedy`.
+
+`GreedyScoreStrategy` оценивает каждый доступный ход через `BoardMover` и выбирает направление, которое даёт максимальный прирост `Score` на текущем ходу.
+
+Если несколько направлений дают одинаковый `Score`, выбирается первое из доступных.
+
+Запуск:
+
+```bash
+dotnet run --project ./src/CashBackMerge.App/CashBackMerge.App.csproj -- simulate \
+  --config campaign.exemple.json \
+  --players 10000 \
+  --strategy greedy \
+  --seed 67 \
+  --output greedy-report.json
+```
+
+### Сравнение стратегий
+
+Обе стратегии запускались на одинаковых:
+
+```text
+config
+seed = 67
+players = 10000
+```
+
+Результаты:
+
+| Метрика | random | greedy |
+|---|---:|---:|
+| Average Score | 407.7744 | 501.2732 |
+| Max Score | 582 | 592 |
+| Max reward rate | 0.9225 | 0.9977 |
+| Status | FAILED | FAILED |
+
+Распределение максимальных плиток для `random`:
+
+```text
+8  -> 35
+16 -> 740
+32 -> 4659
+64 -> 4566
+```
+
+Распределение максимальных плиток для `greedy`:
+
+```text
+16 -> 23
+32 -> 2279
+64 -> 7698
+```
+
+`GreedyScoreStrategy` заметно увеличивает средний `Score`:
+
+```text
+407.7744 -> 501.2732
+```
+
+и значительно чаще приводит к плитке `64`:
+
+```text
+random -> 4566 игроков
+greedy -> 7698 игроков
+```
+
+При этом доля игроков с максимальной наградой также растёт:
+
+```text
+random -> 0.9225
+greedy -> 0.9977
+```
+
+То есть стратегия, оптимизирующая текущий `Score`, оказывается выгоднее для игрока, но ещё сильнее нарушает бизнес-ограничение кампании:
+
+```text
+maxRewardAllowedRate = 0.20
+```
+
+Поэтому обе стратегии получают статус `FAILED`

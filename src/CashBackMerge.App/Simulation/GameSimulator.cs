@@ -1,3 +1,7 @@
+using CashBackMerge.App.Enums;
+using CashBackMerge.App.Simulation;
+using CashBackMerge.App.Strategies;
+
 namespace CashBackMerge.App;
 
 public class GameSimulator
@@ -5,12 +9,14 @@ public class GameSimulator
     private readonly GameConfig _config;
     private readonly int _seed;
     private readonly StrategyType _strategyType;
+    private readonly Func<int, IMoveStrategy> _strategyFactory;
 
-    public GameSimulator(GameConfig config, int seed, StrategyType strategyType)
+    public GameSimulator(GameConfig config, int seed, StrategyType strategyType, Func<int, IMoveStrategy> strategyFactory)
     {
         _config = config;
         _seed = seed;
         _strategyType = strategyType;
+        _strategyFactory = strategyFactory;
     }
 
     public SimulationResult Simulate(int playersCount)
@@ -29,7 +35,7 @@ public class GameSimulator
             var tileSpawner = new TileSpawner(tileSpawnerSeed);
             var engine = new GameEngine(_config, tileSpawner);
 
-            var strategy = CreateStrategy(strategySeed);
+            var strategy = _strategyFactory(strategySeed);
 
             var gameResult = gamePlayer.PlayOneGame(engine, strategy);
 
@@ -37,14 +43,5 @@ public class GameSimulator
         }
 
         return new SimulationResult(_config, _seed, _strategyType, gameResults);
-    }
-
-    private IMoveStrategy CreateStrategy(int seed)
-    {
-        return _strategyType switch
-        {
-            StrategyType.Random => new RandomMoveStrategy(seed),
-            _ => throw new InvalidOperationException($"Unsupported strategy: {_strategyType}")
-        };
     }
 }

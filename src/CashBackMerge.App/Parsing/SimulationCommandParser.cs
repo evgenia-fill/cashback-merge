@@ -1,3 +1,5 @@
+using CashBackMerge.App.Enums;
+
 namespace CashBackMerge.App.Parsing;
 
 public static class SimulationCommandParser
@@ -40,6 +42,7 @@ public static class SimulationCommandParser
         var strategy = strategyText.ToLowerInvariant() switch
         {
             "random" => StrategyType.Random,
+            "greedy" => StrategyType.Greedy,
             _ => throw new ArgumentException($"Unsupported strategy: {strategyText}")
         };
 

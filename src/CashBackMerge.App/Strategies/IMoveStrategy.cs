@@ -1,6 +1,6 @@
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Strategies;
 
 public interface IMoveStrategy
 {
-    MoveDirection GetNextMove(IReadOnlyList<MoveDirection> availableMoves);
+    MoveDirection GetNextMove(IReadOnlyList<MoveDirection> availableMoves, int[,] board);
 }
