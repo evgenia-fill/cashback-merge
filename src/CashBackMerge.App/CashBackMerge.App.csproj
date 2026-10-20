@@ -11,6 +11,9 @@
         <None Update="campaign.exemple.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="campaign.5x5.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="CashBackMerge.Tests"/>
