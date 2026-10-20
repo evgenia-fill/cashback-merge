@@ -1,17 +1,23 @@
 using CashBackMerge.App;
-using static CashBackMerge.App.JsonReportWriter;
+using CashBackMerge.App.Parsing;
 
-var filename = "campaign.exemple.json";
-var seed = 74390;
-var attemptsInSimulation = 10000;
+try
+{
+    var options = SimulationCommandParser.Parse(args);
 
-var dto = JsonDeserializer.DeserializeFromFile(filename);
-ConfigValidator.Validate(dto);
-var config = ConfigParser.Parse(dto);
+    var dto = JsonDeserializer.DeserializeFromFile(options.ConfigPath);
+    ConfigValidator.Validate(dto);
+    var config = ConfigParser.Parse(dto);
 
-var gameSimulator = new GameSimulator(config, seed, StrategyType.Random);
-var simulationResults = gameSimulator.Simulate(attemptsInSimulation);
-
-var stat = StatisticsCreator.CreateStatistics(simulationResults);
-
-Write(stat, "report.json");
+    var simulator = new GameSimulator(config, options.Seed, options.Strategy);
+    var simulationResult = simulator.Simulate(options.Players);
+    
+    var statistics = StatisticsCreator.CreateStatistics(simulationResult);
+    JsonReportWriter.Write(statistics, options.OutputPath);
+    Console.WriteLine($"Report saved to {options.OutputPath}");
+}
+catch (Exception exception)
+{
+    Console.Error.WriteLine(exception.Message);
+    Environment.ExitCode = 1;
+}
