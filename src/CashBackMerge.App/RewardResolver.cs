@@ -2,18 +2,23 @@ namespace CashBackMerge.App;
 
 public static class RewardResolver
 {
-    public static int Resolve(int maxTile, IReadOnlyList<RewardSettings> rewardTable)
+    public static int Resolve(int maxCashback, IReadOnlyList<RewardSettings> rewardTable)
     {
-        foreach (var rewardSetting in rewardTable)
-        {
-            if (maxTile != rewardSetting.Cashback)
-            {
-                continue;
-            }
+        var maxRewardSetting = rewardTable.MaxBy(setting => setting.Cashback)!;
 
-            return rewardSetting.Reward;
+        if (maxCashback >= maxRewardSetting.Cashback)
+        {
+            return maxRewardSetting.Reward;
         }
 
-        throw new KeyNotFoundException($"There's no {maxTile} in reward table");
+        foreach (var rewardSetting in rewardTable)
+        {
+            if (maxCashback == rewardSetting.Cashback)
+            {
+                return rewardSetting.Reward;
+            }
+        }
+
+        throw new KeyNotFoundException($"There's no {maxCashback} in reward table");
     }
 }
