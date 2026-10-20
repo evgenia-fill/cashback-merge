@@ -1,3 +1,4 @@
+using System.Text.Json;
 using CashBackMerge.App;
 
 namespace CashBackMerge.Tests.Mandatory.Mr3;
@@ -5,6 +6,7 @@ namespace CashBackMerge.Tests.Mandatory.Mr3;
 public class RewardAndSimulationTest
 {
     private static readonly GameConfig Config = CreateConfig();
+    private const int Seed = 67;
 
     [Fact(DisplayName = "Максимальная плитка 16% даёт награду соответствующего tier")]
     public void RewardMatchesHighestTile()
@@ -19,16 +21,18 @@ public class RewardAndSimulationTest
     [Fact(DisplayName = "Weighted random учитывает вероятности из конфига")]
     public void SpawnRespectsConfiguredProbabilities()
     {
-        const int seed = 67;
-        var tileSpawner = new TileSpawner(seed);
+        var tileSpawner = new TileSpawner(Seed);
 
         const int iterations = 10_000;
         var board = new int[Config.BoardSize, Config.BoardSize];
         var countCashBackOne = 0;
         var countCashBackTwo = 0;
-        for (var _ = 0; _ < iterations; _++)
+
+        for (var i = 0; i < iterations; i++)
         {
-            var tileSpawnResult = tileSpawner.CreateSpawn(board, Config.SpawnRules);
+            var tileSpawnResult =
+                tileSpawner.CreateSpawn(board, Config.SpawnRules);
+
             if (tileSpawnResult.Value == 1)
             {
                 countCashBackOne++;
@@ -46,25 +50,94 @@ public class RewardAndSimulationTest
         Assert.InRange(probTwo, 0.12m, 0.18m);
     }
 
-    [Fact(DisplayName = "Отчёт содержит распределение максимальных плиток и наград",
-        Skip = "MR3: реализуй тест и удали эту строку")]
+    [Fact(DisplayName = "Отчёт содержит распределение максимальных плиток и наград")]
     public void ReportContainsDistributions()
     {
-        Assert.Fail("Тест не реализован");
+        var statistics = CreateTestStatistics();
+        var outputPath = Path.GetTempFileName();
+
+        try
+        {
+            JsonReportWriter.Write(statistics, outputPath);
+
+            var json = File.ReadAllText(outputPath);
+            using var document = JsonDocument.Parse(json);
+
+            var root = document.RootElement;
+
+            Assert.True(root.TryGetProperty("maxTileDistribution", out var tileDistribution));
+            Assert.True(root.TryGetProperty("rewardDistribution", out var rewardDistribution));
+
+            Assert.Equal(1, tileDistribution.GetProperty("16").GetInt32());
+            Assert.Equal(2, tileDistribution.GetProperty("32").GetInt32());
+            Assert.Equal(1, tileDistribution.GetProperty("64").GetInt32());
+            Assert.Equal(1, rewardDistribution.GetProperty("500").GetInt32());
+            Assert.Equal(3, rewardDistribution.GetProperty("2000").GetInt32());
+        }
+        finally
+        {
+            File.Delete(outputPath);
+        }
     }
 
-    [Fact(DisplayName = "Отчёт содержит долю игроков с максимальной наградой",
-        Skip = "MR3: реализуй тест и удали эту строку")]
+    [Fact(DisplayName = "Отчёт содержит долю игроков с максимальной наградой")]
     public void ReportContainsMaxRewardRate()
     {
-        Assert.Fail("Тест не реализован");
+        var statistics = CreateTestStatistics();
+        var outputPath = Path.GetTempFileName();
+
+        try
+        {
+            JsonReportWriter.Write(statistics, outputPath);
+
+            var json = File.ReadAllText(outputPath);
+            using var document = JsonDocument.Parse(json);
+
+            var actualMaxRewardRate = document.RootElement
+                .GetProperty("actualMaxRewardRate")
+                .GetDecimal();
+
+            Assert.Equal(0.75m, actualMaxRewardRate);
+        }
+        finally
+        {
+            File.Delete(outputPath);
+        }
     }
 
-    [Fact(DisplayName = "Статус OK, если actualMaxRewardRate <= maxRewardAllowedRate, иначе FAILED",
-        Skip = "MR3: реализуй тест и удали эту строку")]
+    [Fact(DisplayName = "Статус OK, если actualMaxRewardRate <= maxRewardAllowedRate, иначе FAILED")]
     public void ReportStatusReflectsBusinessConstraint()
     {
-        Assert.Fail("Тест не реализован");
+        var gameResults = CreateGameResults();
+
+        var failedConfig = Config with { MaxRewardAllowedRate = 0.20m };
+        var failedSimulation = new SimulationResult(failedConfig, Seed, StrategyType.Random, gameResults);
+        var failedStatistics = StatisticsCreator.CreateStatistics(failedSimulation);
+
+        Assert.Equal(StatisticsStatus.Failed, failedStatistics.Status);
+
+        var okConfig = Config with { MaxRewardAllowedRate = 0.75m };
+        var okSimulation = new SimulationResult(okConfig, Seed, StrategyType.Random, gameResults);
+        var okStatistics = StatisticsCreator.CreateStatistics(okSimulation);
+
+        Assert.Equal(StatisticsStatus.Ok, okStatistics.Status);
+    }
+
+    private static SimulationStatistics CreateTestStatistics()
+    {
+        var simulation = new SimulationResult(Config, Seed, StrategyType.Random, CreateGameResults());
+        return StatisticsCreator.CreateStatistics(simulation);
+    }
+
+    private static List<GameResult> CreateGameResults()
+    {
+        return
+        [
+            new GameResult(16, 100, 500),
+            new GameResult(32, 200, 2000),
+            new GameResult(32, 300, 2000),
+            new GameResult(64, 400, 2000)
+        ];
     }
 
     private static GameConfig CreateConfig()

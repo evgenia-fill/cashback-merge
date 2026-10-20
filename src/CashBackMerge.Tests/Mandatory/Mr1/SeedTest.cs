@@ -24,11 +24,41 @@ public class SeedTest
             secondResult.Session.Board.Cast<int>());
     }
 
-    [Fact(
-        DisplayName = "Одинаковый конфиг, seed и стратегия дают одинаковый отчёт симуляции",
-        Skip = "MR3: реализуй тест и удали эту строку")]
+    [Fact(DisplayName = "Одинаковый конфиг, seed и стратегия дают одинаковый отчёт симуляции")]
     public void SameInputsProduceSameSimulationReport()
     {
-        Assert.Fail("Тест не реализован");
+        const int seed = 67;
+        const int playersCount = 100;
+        const string filename = "campaign.exemple.json";
+
+        var dto = JsonDeserializer.DeserializeFromFile(filename);
+        ConfigValidator.Validate(dto);
+
+        var config = ConfigParser.Parse(dto);
+
+        var firstSimulator = new GameSimulator(config, seed, StrategyType.Random);
+        var secondSimulator = new GameSimulator(config, seed, StrategyType.Random);
+
+        var firstStatistics = StatisticsCreator.CreateStatistics(firstSimulator.Simulate(playersCount));
+        var secondStatistics = StatisticsCreator.CreateStatistics(secondSimulator.Simulate(playersCount));
+
+        var firstPath = Path.GetTempFileName();
+        var secondPath = Path.GetTempFileName();
+
+        try
+        {
+            JsonReportWriter.Write(firstStatistics, firstPath);
+            JsonReportWriter.Write(secondStatistics, secondPath);
+
+            var firstReport = File.ReadAllText(firstPath);
+            var secondReport = File.ReadAllText(secondPath);
+
+            Assert.Equal(firstReport, secondReport);
+        }
+        finally
+        {
+            File.Delete(firstPath);
+            File.Delete(secondPath);
+        }
     }
 }
