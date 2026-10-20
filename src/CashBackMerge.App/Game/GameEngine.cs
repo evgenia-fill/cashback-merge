@@ -1,4 +1,8 @@
-namespace CashBackMerge.App;
+using CashBackMerge.App.Entities;
+using CashBackMerge.App.Enums;
+using CashBackMerge.App.Spawning;
+
+namespace CashBackMerge.App.Game;
 
 public class GameEngine
 {

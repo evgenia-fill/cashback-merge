@@ -1,3 +1,6 @@
+using CashBackMerge.App.Enums;
+using CashBackMerge.App.Game;
+
 namespace CashBackMerge.App.Strategies;
 
 public class GreedyScoreStrategy : IMoveStrategy

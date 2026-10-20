@@ -1,4 +1,6 @@
 using CashBackMerge.App;
+using CashBackMerge.App.Configuration;
+using CashBackMerge.App.Validation;
 
 namespace CashBackMerge.Tests.Mandatory.Mr1;
 

@@ -1,3 +1,6 @@
+using CashBackMerge.App.Entities;
+using CashBackMerge.App.Enums;
+using CashBackMerge.App.Game;
 using CashBackMerge.App.Strategies;
 
 namespace CashBackMerge.App.Simulation;

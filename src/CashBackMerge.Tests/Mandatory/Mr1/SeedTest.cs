@@ -1,4 +1,12 @@
 using CashBackMerge.App;
+using CashBackMerge.App.Configuration;
+using CashBackMerge.App.Enums;
+using CashBackMerge.App.Game;
+using CashBackMerge.App.Reporting;
+using CashBackMerge.App.Simulation;
+using CashBackMerge.App.Spawning;
+using CashBackMerge.App.Strategies;
+using CashBackMerge.App.Validation;
 
 namespace CashBackMerge.Tests.Mandatory.Mr1;
 
@@ -36,8 +44,10 @@ public class SeedTest
 
         var config = ConfigParser.Parse(dto);
 
-        var firstSimulator = new GameSimulator(config, seed, StrategyType.Random);
-        var secondSimulator = new GameSimulator(config, seed, StrategyType.Random);
+        Func<int, IMoveStrategy> strategyFactory = strategySeed => new RandomMoveStrategy(strategySeed);
+
+        var firstSimulator = new GameSimulator(config, seed, StrategyType.Random, strategyFactory);
+        var secondSimulator = new GameSimulator(config, seed, StrategyType.Random, strategyFactory);
 
         var firstStatistics = StatisticsCreator.CreateStatistics(firstSimulator.Simulate(playersCount));
         var secondStatistics = StatisticsCreator.CreateStatistics(secondSimulator.Simulate(playersCount));

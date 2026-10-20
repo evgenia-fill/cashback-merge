@@ -1,4 +1,6 @@
-namespace CashBackMerge.App;
+using CashBackMerge.App.Configuration;
+
+namespace CashBackMerge.App.Validation;
 
 public static class ConfigValidator
 {

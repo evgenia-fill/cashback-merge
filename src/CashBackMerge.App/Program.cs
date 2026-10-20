@@ -1,8 +1,10 @@
-using CashBackMerge.App;
 using CashBackMerge.App.Configuration;
 using CashBackMerge.App.Enums;
 using CashBackMerge.App.Parsing;
+using CashBackMerge.App.Reporting;
+using CashBackMerge.App.Simulation;
 using CashBackMerge.App.Strategies;
+using CashBackMerge.App.Validation;
 
 try
 {

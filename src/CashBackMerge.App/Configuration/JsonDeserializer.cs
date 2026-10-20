@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Configuration;
 
 public static class JsonDeserializer
 {

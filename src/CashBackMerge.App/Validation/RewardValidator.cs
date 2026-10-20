@@ -1,5 +1,7 @@
 using System.Globalization;
-using CashBackMerge.App;
+using CashBackMerge.App.Configuration;
+
+namespace CashBackMerge.App.Validation;
 
 public static class RewardValidator
 {

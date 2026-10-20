@@ -1,4 +1,5 @@
 using System.Globalization;
+using CashBackMerge.App.Entities;
 
 namespace CashBackMerge.App.Configuration;
 

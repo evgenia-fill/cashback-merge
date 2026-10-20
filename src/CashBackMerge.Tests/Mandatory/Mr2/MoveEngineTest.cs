@@ -1,4 +1,10 @@
 using CashBackMerge.App;
+using CashBackMerge.App.Configuration;
+using CashBackMerge.App.Entities;
+using CashBackMerge.App.Enums;
+using CashBackMerge.App.Game;
+using CashBackMerge.App.Spawning;
+using CashBackMerge.App.Validation;
 
 namespace CashBackMerge.Tests.Mandatory.Mr2;
 

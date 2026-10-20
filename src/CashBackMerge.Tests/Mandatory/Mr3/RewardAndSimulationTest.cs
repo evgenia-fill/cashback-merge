@@ -1,5 +1,12 @@
 using System.Text.Json;
 using CashBackMerge.App;
+using CashBackMerge.App.Configuration;
+using CashBackMerge.App.Entities;
+using CashBackMerge.App.Enums;
+using CashBackMerge.App.Reporting;
+using CashBackMerge.App.Simulation;
+using CashBackMerge.App.Spawning;
+using CashBackMerge.App.Validation;
 
 namespace CashBackMerge.Tests.Mandatory.Mr3;
 

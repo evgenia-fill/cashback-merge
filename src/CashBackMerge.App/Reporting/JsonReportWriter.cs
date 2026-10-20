@@ -1,6 +1,7 @@
 using System.Text.Json;
+using CashBackMerge.App.Entities;
 
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Reporting;
 
 public static class JsonReportWriter
 {

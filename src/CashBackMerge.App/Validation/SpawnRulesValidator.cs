@@ -1,6 +1,7 @@
 using System.Globalization;
+using CashBackMerge.App.Configuration;
 
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Validation;
 
 public static class SpawnRulesValidator
 {

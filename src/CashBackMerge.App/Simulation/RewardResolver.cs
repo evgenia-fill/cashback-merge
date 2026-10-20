@@ -1,4 +1,6 @@
-namespace CashBackMerge.App;
+using CashBackMerge.App.Entities;
+
+namespace CashBackMerge.App.Simulation;
 
 public static class RewardResolver
 {

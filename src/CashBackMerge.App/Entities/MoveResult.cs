@@ -1,3 +1,3 @@
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Entities;
 
 public record MoveResult(bool IsChanged);

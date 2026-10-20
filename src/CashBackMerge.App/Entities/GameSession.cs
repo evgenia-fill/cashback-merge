@@ -1,4 +1,6 @@
-namespace CashBackMerge.App;
+using CashBackMerge.App.Enums;
+
+namespace CashBackMerge.App.Entities;
 
 public class GameSession
 {

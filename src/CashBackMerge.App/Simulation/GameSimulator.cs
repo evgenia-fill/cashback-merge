@@ -1,8 +1,10 @@
+using CashBackMerge.App.Entities;
 using CashBackMerge.App.Enums;
-using CashBackMerge.App.Simulation;
+using CashBackMerge.App.Game;
+using CashBackMerge.App.Spawning;
 using CashBackMerge.App.Strategies;
 
-namespace CashBackMerge.App;
+namespace CashBackMerge.App.Simulation;
 
 public class GameSimulator
 {

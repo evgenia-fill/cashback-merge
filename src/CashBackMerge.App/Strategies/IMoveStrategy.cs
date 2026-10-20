@@ -1,3 +1,5 @@
+using CashBackMerge.App.Enums;
+
 namespace CashBackMerge.App.Strategies;
 
 public interface IMoveStrategy

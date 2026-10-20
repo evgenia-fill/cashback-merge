@@ -1,4 +1,7 @@
-namespace CashBackMerge.App;
+using CashBackMerge.App.Entities;
+using CashBackMerge.App.Enums;
+
+namespace CashBackMerge.App.Game;
 
 public static class BoardMover
 {
