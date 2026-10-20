@@ -11,7 +11,7 @@ try
 
     var simulator = new GameSimulator(config, options.Seed, options.Strategy);
     var simulationResult = simulator.Simulate(options.Players);
-    
+
     var statistics = StatisticsCreator.CreateStatistics(simulationResult);
     JsonReportWriter.Write(statistics, options.OutputPath);
     Console.WriteLine($"Report saved to {options.OutputPath}");

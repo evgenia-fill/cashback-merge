@@ -55,7 +55,7 @@ public class GameSession
     {
         Score += score;
     }
-    
+
     internal void Finish()
     {
         Status = GameStatus.Finished;

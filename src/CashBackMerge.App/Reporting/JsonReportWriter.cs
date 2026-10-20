@@ -7,7 +7,7 @@ public static class JsonReportWriter
     public static void Write(SimulationStatistics statistics, string outputPath)
     {
         var jsonReport = CreateReport(statistics);
-        
+
         var options = new JsonSerializerOptions
         {
             WriteIndented = true,
