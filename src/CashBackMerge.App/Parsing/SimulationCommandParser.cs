@@ -8,7 +8,7 @@ public static class SimulationCommandParser
     {
         if (args.Length == 0 || args[0] != "simulate")
         {
-            throw new ArgumentException("Expected command: simulate");
+            throw new ArgumentException($"Unexpected command {args[0]}");
         }
 
         var options = new Dictionary<string, string>();

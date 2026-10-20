@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace CashBackMerge.App.Console;
+namespace CashBackMerge.App.ConsoleGame;
 
 public class ConsoleGame
 {
@@ -10,17 +10,17 @@ public class ConsoleGame
 
         for (var row = 0; row < board.GetLength(0); row++)
         {
-            System.Console.WriteLine(border);
+            Console.WriteLine(border);
 
             for (var column = 0; column < board.GetLength(1); column++)
             {
-                System.Console.Write($"| {board[row, column]} ");
+                Console.Write($"| {board[row, column]} ");
             }
 
-            System.Console.WriteLine("|");
+            Console.WriteLine("|");
         }
 
-        System.Console.WriteLine(border);
+        Console.WriteLine(border);
     }
 
     private static string BuildBorder(int size)
