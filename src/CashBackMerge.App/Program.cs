@@ -8,7 +8,5 @@ var dto = JsonDeserializer.DeserializeFromFile(filename);
 ConfigValidator.Validate(dto);
 var config = ConfigParser.Parse(dto);
 
-var tileSpawner = new TileSpawner(seed);
-
-var gameSimulator = new GameSimulator(config, seed);
+var gameSimulator = new GameSimulator(config, seed, StrategyType.Random);
 var simulations = gameSimulator.Simulate(attemptsInSimulation);

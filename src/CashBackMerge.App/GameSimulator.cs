@@ -4,11 +4,13 @@ public class GameSimulator
 {
     private readonly GameConfig _config;
     private readonly int _seed;
+    private readonly StrategyType _strategyType;
 
-    public GameSimulator(GameConfig config, int seed)
+    public GameSimulator(GameConfig config, int seed, StrategyType strategyType)
     {
         _config = config;
         _seed = seed;
+        _strategyType = strategyType;
     }
 
     public List<GameResult> Simulate(int attempts)
