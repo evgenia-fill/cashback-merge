@@ -13,13 +13,15 @@ public class GameSimulator
         _strategyType = strategyType;
     }
 
-    public List<GameResult> Simulate(int attempts)
+    public SimulationResult Simulate(int playersCount)
     {
-        var results = new List<GameResult>();
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(playersCount);
+
+        var gameResults = new List<GameResult>();
         var gamePlayer = new GamePlayer(_config);
         var simulationRandom = new Random(_seed);
 
-        for (var i = 0; i < attempts; i++)
+        for (var i = 0; i < playersCount; i++)
         {
             var tileSpawnerSeed = simulationRandom.Next();
             var strategySeed = simulationRandom.Next();
@@ -27,13 +29,22 @@ public class GameSimulator
             var tileSpawner = new TileSpawner(tileSpawnerSeed);
             var engine = new GameEngine(_config, tileSpawner);
 
-            var strategy = new RandomMoveStrategy(strategySeed);
+            var strategy = CreateStrategy(strategySeed);
 
             var gameResult = gamePlayer.PlayOneGame(engine, strategy);
 
-            results.Add(gameResult);
+            gameResults.Add(gameResult);
         }
 
-        return results;
+        return new SimulationResult(_config, _seed, _strategyType, gameResults);
+    }
+
+    private IMoveStrategy CreateStrategy(int seed)
+    {
+        return _strategyType switch
+        {
+            StrategyType.Random => new RandomMoveStrategy(seed),
+            _ => throw new InvalidOperationException($"Unsupported strategy: {_strategyType}")
+        };
     }
 }
